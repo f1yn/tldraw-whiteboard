@@ -1,0 +1,18 @@
+{
+  "name": "tldraw-whiteboard",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@tldraw/tldraw": "1.29.0",
+    "lodash": "4.17.21",
+    "next": "13.2.4",
+    "react": "18.2.0",
+    "react-dom": "18.2.0"
+  }
+}
