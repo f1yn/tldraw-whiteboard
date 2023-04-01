@@ -12,12 +12,12 @@ const localStorageProxy = {
 				return localStorage.removeItem(persistKey);
 			}
 			return localStorage.setItem(persistKey, JSON.stringify(newValue));
-		} catch (_e) {}
+		} catch (_e) { }
 	},
 	getValue() {
 		try {
 			return JSON.parse(localStorage.getItem(persistKey) || null);
-		} catch (_e) {}
+		} catch (_e) { }
 	},
 };
 
@@ -29,7 +29,7 @@ const debouncedPersistStateToStorage = debounce((app) => {
  * Allows persisting via browser localStorage between saves to help deter data-loss
  * @param {*} fileSystemEvents
  */
-export default function useLocalStorage() { 
+export default function useLocalStorage() {
 	return useMemo(() => {
 		const { initialSettings, initialDocument } = localStorageProxy.getValue() || {};
 

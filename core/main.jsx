@@ -17,14 +17,14 @@ function Whiteboard() {
 		/>
 	);
 }
-               
+
 function useTlDrawProps() {
 	const fileSystemEvents = useFileSystem();
 	const localStorageEvents = useLocalStorage();
 	const dynamicTitleEvents = useDynamicTitle();
 
 	// Create list of hook outputs. Overrides at the end of the list will take precedence over earlier items.
-	const tlDrawHooks = [fileSystemEvents, localStorageEvents, dynamicTitleEvents]; 
+	const tlDrawHooks = [fileSystemEvents, localStorageEvents, dynamicTitleEvents];
 
 	return useMemo(() => Object.assign({},
 		// Combine tlDraw hook output in order of first-to-last
@@ -34,7 +34,7 @@ function useTlDrawProps() {
 		...['onPersist', 'onNewProject'].map((callbackNameKey) => ({
 			// create the named proxy method
 			[callbackNameKey]: (...args) =>
-				tlDrawHooks.forEach(hookOutput => 
+				tlDrawHooks.forEach(hookOutput =>
 					hookOutput[callbackNameKey]?.(...args)
 				)
 		}))
