@@ -22,28 +22,30 @@ const localStorageProxy = {
 };
 
 const debouncedPersistStateToStorage = debounce((app) => {
-	localStorageProxy.setValue(app.document);
-}, 2000);
+	localStorageProxy.setValue({ initialSettings: app.settings, initialDocument: app.document });
+}, 1000);
 
 /**
  * Allows persisting via browser localStorage between saves to help deter data-loss
  * @param {*} fileSystemEvents
  */
-export default function useLocalStorage(fileSystemEvents) {
+export default function useLocalStorage() { 
 	return useMemo(() => {
-		const initialDocument = localStorageProxy.getValue();
+		const { initialSettings, initialDocument } = localStorageProxy.getValue() || {};
 
 		return {
-			document: initialDocument || undefined,
+			document: initialDocument,
+			onMount(app) {
+				if (!initialSettings) return;
+				app.setSetting('isDarkMode', initialSettings.isDarkMode);
+				app.setSetting('showGrid', initialSettings.showGrid);
+			},
 			onPersist(app) {
 				debouncedPersistStateToStorage(app);
 			},
-			onNewProject(app, openDialog) {
-				// erase persist
+			onNewProject() {
 				localStorageProxy.setValue(null);
-				// proxy callback to fs event
-				return fileSystemEvents.onNewProject(app, openDialog);
 			},
-		};
-	}, [fileSystemEvents.onNewProject]);
+		}
+	}, []);
 }
